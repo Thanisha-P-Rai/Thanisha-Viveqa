@@ -158,7 +158,7 @@ The complete hardware design is verified using Verilog simulation testbenches an
 ---
 # Block diagram
 
-<img width="900" height="500" alt="image" src="https://github.com/user-attachments/assets/89264225-2942-47f2-87af-688d7c6eee83" />
+<img width="400" height="500" alt="image" src="https://github.com/user-attachments/assets/89264225-2942-47f2-87af-688d7c6eee83" />
 
 ---
 
