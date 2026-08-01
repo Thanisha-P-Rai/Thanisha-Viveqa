@@ -156,7 +156,11 @@ The decrypted message is transmitted back to the host computer through the UART 
 The complete hardware design is verified using Verilog simulation testbenches and implemented on the FPGA. Successful recovery of the transmitted message confirms the correct functionality of the simplified lattice-based PQC engine and the NTT accelerator.
 
 ---
+# Block diagram
 
+<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/89264225-2942-47f2-87af-688d7c6eee83" />
+
+---
 
 # Main Modules
 
@@ -239,6 +243,9 @@ Displays encryption status, ciphertext, and recovered message.
 * Finite State Machines (FSM)
 
 ---
+
+
+
 
 
 
