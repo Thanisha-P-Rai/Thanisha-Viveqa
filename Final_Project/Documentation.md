@@ -1,12 +1,91 @@
-FPGA Implementation of a Simplified Lattice-Based Post-Quantum Cryptography Encryption and Decryption Engine Using a Number Theoretic Transform Accelerator
-INTRODUCTION
+FPGA Implementation of a Simplified Lattice-Based Post-Quantum Cryptographic Encryption and Decryption Engine with NTT Acceleration
+1. Project Overview
+This project implements a simplified lattice-based post-quantum cryptographic (PQC) encryption and decryption engine on an Artix-7 FPGA. The design uses the Number Theoretic Transform (NTT) to accelerate polynomial multiplication, which is the core operation in lattice-based cryptography. The system receives plaintext through UART, performs key generation, encryption and decryption in hardware, and displays the output via UART, LCD, and LEDs.
+Objectives
+•	Implement a simplified lattice-based PQC algorithm on FPGA. 
+•	Accelerate polynomial multiplication using NTT. 
+•	Perform hardware-based key generation, encryption, and decryption. 
+•	Demonstrate secure data transmission using FPGA. 
+________________________________________
+2. Design and Architecture
+System Architecture
+PC GUI
+   │
+UART Receiver
+   │
+Crypto Engine
+   │
+NTT Accelerator
+   │
+Memory
+   │
+UART TX / LCD / LEDs
+Main Components
+•	UART Receiver & Transmitter 
+•	Crypto Engine (Key Generation, Encryption, Decryption) 
+•	NTT Accelerator 
+•	Memory Module 
+•	LCD Display 
+•	LED Status Indicators 
+________________________________________
+3. Implementation Approach
+1.	Plaintext is sent from the PC through UART. 
+2.	The Crypto Engine generates the secret/public keys. 
+3.	NTT performs fast polynomial multiplication. 
+4.	Encryption is carried out using the generated keys. 
+5.	The ciphertext is decrypted to recover the original message. 
+6.	The decrypted message is displayed on the LCD, LEDs, and UART. 
+________________________________________
+4. Module Descriptions
+Module	Description
+top.v	Integrates all project modules.
+crypto_engine.v	Controls key generation, encryption, and decryption.
+lfsr.v	Generates pseudo-random values for keys.
+bank_mem.v	Stores polynomial coefficients and intermediate data.
+butterfly.v	Performs Forward NTT butterfly operations.
+inverse_butterfly.v	Performs Inverse NTT butterfly operations.
+mod_add.v	Modular addition operation.
+mod_sub.v	Modular subtraction operation.
+mod_mul.v	Modular multiplication operation.
+twiddle_rom.v	Stores Forward NTT twiddle factors.
+inverse_twiddle_rom.v	Stores Inverse NTT twiddle factors.
+address_generator.v	Generates addresses for NTT stages.
+twiddle_index.v	Generates twiddle factor indices.
+uart_rx.v	Receives data from PC.
+uart_tx.v	Sends processed data back to PC.
+lcd_display.v	Displays messages on a 16×2 LCD.
+________________________________________
+5. Build and Run Instructions
+Requirements
+•	Xilinx Vivado 
+•	Artix-7 FPGA Board 
+•	Python UART GUI (or Serial Terminal) 
+•	USB-UART connection 
+Steps
+1.	Open the project in Vivado. 
+2.	Add all Verilog source files and constraints. 
+3.	Set top.v as the top module. 
+4.	Run Synthesis, Implementation, and Generate Bitstream. 
+5.	Program the FPGA. 
+6.	Open the UART GUI and send a plaintext character. 
+7.	Observe the encrypted/decrypted output on the UART, LCD, and LEDs. 
+________________________________________
+6. Testing
+Test Procedure
+•	Send a plaintext character (e.g., A) through the UART GUI. 
+•	Verify that the FPGA performs encryption and decryption. 
+•	Confirm that the recovered plaintext matches the original input. 
+•	Check the output on the UART terminal, LCD display, and LEDs. 
+________________________________________
+7. Applications
+•	Post-Quantum Cryptography 
+•	Secure Embedded Systems 
+•	IoT Security 
+•	FPGA-Based Cryptographic Accelerators 
+•	Secure Communication Systems 
+________________________________________
 
-Public-key cryptography forms the foundation of modern digital communication. Secure Internet browsing, online banking, cloud computing, military communication, healthcare systems, and IoT devices all depend upon cryptographic algorithms such as RSA and Elliptic Curve Cryptography (ECC). These algorithms derive their security from mathematical problems that are computationally infeasible for classical computers.
 
-However, the rapid development of quantum computing has introduced a significant security challenge. Shor's algorithm demonstrates that sufficiently large quantum computers can efficiently solve the integer factorization and discrete logarithm problems upon which RSA and ECC rely. As a result, many widely deployed cryptographic systems will become vulnerable once practical quantum computers become available.
+8. Conclusion
+This project demonstrates a hardware implementation of a simplified lattice-based post-quantum cryptographic engine on an FPGA. By using an NTT accelerator, the design achieves efficient polynomial multiplication, enabling faster encryption and decryption. The modular architecture, UART interface, and LCD output make the system suitable for demonstrating quantum-resistant cryptography on FPGA hardware.
 
-To address this issue, researchers have developed Post-Quantum Cryptography (PQC), a family of cryptographic algorithms designed to remain secure against both classical and quantum attacks. Among these, lattice-based cryptography has emerged as one of the strongest candidates due to its mathematical hardness, high efficiency, and suitability for hardware implementation.
-
-The National Institute of Standards and Technology (NIST) selected CRYSTALS-Kyber as the standard algorithm for public-key encryption and key encapsulation. Kyber relies heavily on polynomial arithmetic performed over finite rings. The computationally intensive operation in Kyber is polynomial multiplication, which is accelerated using the Number Theoretic Transform (NTT).
-
-This project implements a simplified lattice-based encryption and decryption engine inspired by Kyber on an FPGA. Although simplified for educational purposes (N = 8, Q = 17), the architecture preserves the essential components of a practical lattice-based cryptographic processor, including key generation, encryption, decryption, modular arithmetic, noise sampling, and an NTT accelerator.
