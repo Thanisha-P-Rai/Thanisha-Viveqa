@@ -113,15 +113,50 @@ final2_improved/
 
 # Working Principle
 
-1. The user sends an 8-bit message through the Python UART GUI.
-2. The UART receiver captures the incoming byte.
-3. The crypto engine generates secret and public keys.
-4. Polynomial multiplication is accelerated using the Number Theoretic Transform (NTT).
-5. The message is encrypted into ciphertext polynomials.
-6. The ciphertext is decrypted using the generated secret key.
-7. The recovered message is transmitted back through UART and displayed on the LCD.
+The proposed system implements a simplified lattice-based Post-Quantum Cryptography (PQC) engine on an FPGA. The complete encryption and decryption process is executed in hardware using Verilog HDL, with the Number Theoretic Transform (NTT) accelerating polynomial multiplication. The operational flow is as follows:
+
+### Step 1: Message Input
+
+The user enters an 8-bit plaintext message through the Python-based UART GUI. The message is transmitted serially to the FPGA using the UART communication interface.
+
+### Step 2: UART Reception
+
+The UART Receiver module converts the incoming serial data into parallel 8-bit data and forwards it to the Crypto Engine. Once a valid byte is received, the controller initiates the cryptographic operations.
+
+### Step 3: Key Generation
+
+The Crypto Engine generates the required secret and public keys. An LFSR (Linear Feedback Shift Register) is used to produce pseudo-random polynomial coefficients representing the secret key and error polynomials. These coefficients are stored in dedicated memory banks for subsequent computations.
+
+### Step 4: Polynomial Preparation
+
+The plaintext message is encoded into polynomial form, while the generated secret, public, and error polynomials are arranged according to the selected lattice parameters (**N = 8**, **q = 17**). These reduced parameters simplify hardware implementation while preserving the essential computational flow of lattice-based cryptography.
+
+### Step 5: Forward Number Theoretic Transform (NTT)
+
+The input polynomials are transformed from the coefficient domain into the NTT domain using the Forward NTT module. The butterfly processing units perform modular additions, subtractions, and multiplications with precomputed twiddle factors stored in ROM. Transforming the polynomials into the NTT domain enables polynomial multiplication to be performed efficiently as element-wise multiplication.
+
+### Step 6: Encryption
+
+Using the generated keys, the plaintext polynomial is encrypted according to the simplified lattice-based encryption algorithm. Polynomial multiplications required during encryption are accelerated by the NTT engine, while modular arithmetic units ensure all computations remain within the finite field defined by modulus **q = 17**.
+
+### Step 7: Inverse NTT
+
+After point-wise multiplication in the transform domain, the Inverse NTT converts the resulting polynomial back into the coefficient domain. This reconstructed polynomial forms the encrypted ciphertext.
+
+### Step 8: Decryption
+
+The ciphertext is processed using the generated secret key. Similar polynomial arithmetic operations are performed to recover the original plaintext polynomial. The recovered coefficients are then converted back into the corresponding message bits.
+
+### Step 9: Output Display
+
+The decrypted message is transmitted back to the host computer through the UART Transmitter. Simultaneously, the LCD controller displays the current encryption/decryption status and the recovered message, providing real-time verification of successful operation.
+
+### Step 10: System Verification
+
+The complete hardware design is verified using Verilog simulation testbenches and implemented on the FPGA. Successful recovery of the transmitted message confirms the correct functionality of the simplified lattice-based PQC engine and the NTT accelerator.
 
 ---
+
 
 # Main Modules
 
