@@ -2,9 +2,20 @@
 
 ## Overview
 
-This project implements a **simplified lattice-based Post-Quantum Cryptography (PQC) encryption/decryption engine** on an FPGA using **Verilog HDL**. The design demonstrates the core concepts behind modern lattice-based cryptographic schemes such as **CRYSTALS-Kyber**, while remaining lightweight enough for educational and FPGA implementation.
+Post-Quantum Cryptography (PQC) is a new generation of cryptographic algorithms designed to remain secure against attacks from quantum computers. Among the various PQC approaches, **lattice-based cryptography** has gained significant attention due to its strong security guarantees and efficient implementation in both software and hardware. Modern standards such as **CRYSTALS-Kyber**, selected by NIST for post-quantum key encapsulation, rely heavily on polynomial arithmetic accelerated by the **Number Theoretic Transform (NTT)**.
 
-The system performs key generation, encryption, and decryption using polynomial arithmetic accelerated by the **Number Theoretic Transform (NTT)**. Communication with a host PC is achieved through UART, while encryption status and results are displayed on an LCD.
+This project presents an **FPGA-based simplified lattice-based Post-Quantum Cryptography engine** implemented entirely in **Verilog HDL**. The design demonstrates the fundamental operations of lattice-based encryption, including **key generation**, **encryption**, **decryption**, and **NTT-based polynomial multiplication**, while integrating UART communication for data transfer and an LCD interface for displaying the encryption status and results.
+
+The implementation is described as **simplified** because it uses a reduced parameter set compared to production-grade lattice-based cryptographic schemes. Specifically, the design employs:
+
+* **Polynomial degree (N) = 8** instead of the typical **N = 256** used in CRYSTALS-Kyber.
+* **Modulus (q) = 17** instead of larger prime moduli such as **3329**.
+* Simplified polynomial arithmetic and lightweight parameter sizes suitable for FPGA implementation and educational demonstration.
+
+These reduced parameters significantly lower hardware resource utilization, simplify the NTT architecture, and make the complete encryption/decryption flow easier to understand, verify, and implement on resource-constrained FPGA platforms. Although the system does **not provide the security level of standardized PQC algorithms**, it accurately demonstrates the underlying mathematical principles and hardware architecture used in lattice-based cryptographic accelerators.
+
+Overall, this project serves as a proof-of-concept hardware implementation that illustrates how NTT acceleration can improve polynomial computations in lattice-based cryptography while providing a foundation for future migration toward full-scale implementations such as CRYSTALS-Kyber.
+
 
 ---
 
